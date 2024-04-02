@@ -1,0 +1,55 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ hub.name }} | {% endblock %}
+
+{% block content %} 
+<div class="p-10 lg:p-20 text-center">
+    <h1 class="font-mono text-3xl lg:text-6xl text-white">{{ hub.name }}</h1>
+</div>
+
+<div class="lg:w-2/4 mx-4 lg:mx-auto p-4 bg-white rounded-xl">
+    <div class="chat-messages space-y-3" id="chat-messages">
+        <div class="p-4 bg-gray-200 rounded-xl">
+            <p class="font-semibold">Username</p>
+            <p>Lorem ipsume ddf dsafdas dsfashfowe</p>
+        </div>
+    </div>        
+</div>
+
+<div class="lg:w-2/4 mt-6 mx-4 lg:mx-auto p-3 bg-white rounded-xl">
+    <form method="post" action="." class="flex">
+        <input type="text" name="content" class="flex-1 mr-3" placeholder="Write here..." id="chat-message-input">
+
+        <button 
+            class="px-5 py-3 rounded-xl text-white bg-sky-500 hover:bg-sky-700"
+            id="chat-message-submit"
+        >send</button>
+    </form>
+</div>
+{% endblock %}
+
+{% block scripts %} 
+{{ room.slug|json_script:"json-hubname"}}
+<script>
+    //Extracting hubName from JSON data
+    const hubName = JSON.parse(document.getElementById('json-hubname').textContent)
+    // Establishing a WebSocket connection
+    const chatSocket = new WebSocket(
+        'ws://'  // WebSocket protocol
+        + window.location.host  // Obtaining the host of the current webpage
+        + '/ws/'  // Endpoint for WebSocket communication
+        + hubName  // Variable representing the name of the hub
+        + '/'
+    );
+
+    // Handling incoming messages
+    chatSocket.onmessage = function(e) {
+        console.log('onmessage')  // Logging when a message is received
+    }
+
+    // Handling WebSocket connection closure
+    chatSocket.onclose = function(e) {
+        console.log('onclose')  // Logging when the WebSocket connection is closed
+    }
+</script>
+{% endblock %}
