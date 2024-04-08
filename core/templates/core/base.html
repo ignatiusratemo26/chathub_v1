@@ -6,11 +6,17 @@
     <title>{% block title %}{% endblock %}ChatHub</title>
     <script src="https://cdn.tailwindcss.com" async defer></script>
 </head>
-<body class="bg-emerald-400">
-    <nav class="flex items-center justify-between px-4 py-6 bg-sky-800">
+<body class="h-14 bg-gradient-to-r from-sky-500 to-indigo-500">
+    <nav class="fixed flex items-center justify-between px-4 py-6 bg-sky-800 w-full">
         <div>
             <a href="/" class="font-mono text-3xl text-white">ChatHub</a>
         </div>
+
+        <div class="text-center">
+            <br>
+            <h1 class="font-mono text-xl lg:text-xl text-white">{{ hub.name }}</h1>
+        </div>
+
         <div class="flex items-center space-x-4">
             {% if request.user.is_authenticated %}
                 <a href="/hubs/" class="text-white hover:text-gray-200">Hubs</a>

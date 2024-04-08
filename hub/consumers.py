@@ -25,3 +25,32 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.hub_group_name,
             self.channel_name
         )
+    
+    # Defining a method to handle incoming WebSocket messages
+    async def receive(self, text_data):
+        # Parsing the incoming JSON-formatted text data into a Python dictionary
+        data = json.load(text_data)
+        # Extracting the 'message', 'username', and 'hub' data from the parsed dictionary
+        message = data['message']   # Extracting the message content
+        username = data['username'] # Extracting the username of the sender
+        hub = data['hub']           # Extracting the hub information
+
+        await self.channel_layer.group_send(
+            self.hub_group_name,
+            {
+                'type': 'chat_message',
+                'message': message,
+                'username': username,
+                'hub': hub,
+            }
+        )
+    async def chat_message(self, event):
+        message = event['message']
+        username = event['username']
+        hub = event['hub']
+
+        await self.send(text_data= json.dumps({
+            'message': message,
+            'username': username,
+            'hub': hub,
+        }))
