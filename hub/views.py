@@ -1,7 +1,7 @@
 #to ensure the user is logged in before joining a Hub
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .models import Hub
+from .models import Hub, Message
 
 @login_required
 def hubs(request):
@@ -11,5 +11,6 @@ def hubs(request):
 @login_required
 def hub(request, slug):
     hub = Hub.objects.get(slug=slug)
+    messages = Message.objects.filter(hub=hub)[0:25]
 
-    return render(request, 'hub/hub.html', {'hub': hub})
+    return render(request, 'hub/hub.html', {'hub': hub, 'messages' : messages})

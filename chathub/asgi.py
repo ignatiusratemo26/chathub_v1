@@ -13,6 +13,9 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'chathub.settings')
 application = ProtocolTypeRouter({
     "http": get_asgi_application(),
     "websocket": AuthMiddlewareStack(
-        hub.routing.websocket_urlpatterns
+        URLRouter(
+            hub.routing.websocket_urlpatterns
+        )
+        
     )
 })

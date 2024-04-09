@@ -29,7 +29,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Defining a method to handle incoming WebSocket messages
     async def receive(self, text_data):
         # Parsing the incoming JSON-formatted text data into a Python dictionary
-        data = json.load(text_data)
+        data = json.loads(text_data)
+        print(data)
         # Extracting the 'message', 'username', and 'hub' data from the parsed dictionary
         message = data['message']   # Extracting the message content
         username = data['username'] # Extracting the username of the sender
